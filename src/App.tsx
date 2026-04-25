@@ -15,15 +15,17 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <Hero />
-      <Badges />
-      <Nosotros />
-      <Servicios />
-      <Habitaciones />
-      <Galeria />
-      <Resenas />
-      <Mapa />
-      <Contacto />
+      <main>
+        <Hero />
+        <Badges />
+        <Nosotros />
+        <Servicios />
+        <Habitaciones />
+        <Galeria />
+        <Resenas />
+        <Mapa />
+        <Contacto />
+      </main>
       <Footer />
     </>
   );
