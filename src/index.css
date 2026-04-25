@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --forest: #2D4A3E;
+  --moss: #4A7C59;
+  --sage: #8FAF8A;
+  --stone: #C8B89A;
+  --ember: #C4622D;
+  --cloud: #F5F2ED;
+  --cream: #FAF8F4;
+  --dark: #1A2820;
+  --text: #3A3530;
+  --warm-mid: #6A6560;
+  --light-line: #E8E4DD;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounceY {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-10px); }
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.animate-fade-up   { animation: fadeUp 0.9s ease both; }
+.animate-fade-up-1 { animation: fadeUp 0.9s 0.15s ease both; }
+.animate-fade-up-2 { animation: fadeUp 0.9s 0.30s ease both; }
+.animate-fade-up-3 { animation: fadeUp 0.9s 0.45s ease both; }
+.animate-fade-up-4 { animation: fadeUp 0.9s 0.60s ease both; }
+.animate-bounce-y  { animation: bounceY 2s infinite; }
+.animate-slide-in  { animation: slideIn 0.35s cubic-bezier(0.4,0,0.2,1) both; }
+.animate-fade-in   { animation: fadeIn 0.3s ease both; }
+
+.reveal { opacity:0; transform:translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+.section-tag { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--ember); margin-bottom:0.6rem; display:block; }
+.carousel-track { display:flex; gap:1.5rem; transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+
+.font-display { font-family: 'Playfair Display', serif !important; }

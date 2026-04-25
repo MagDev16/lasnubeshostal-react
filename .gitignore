@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.parcel-cache/
+bundle.html
+*.b64
+src/assets/img*.b64
+.env
+.env.local
