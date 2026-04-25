@@ -1,42 +1,66 @@
 import { useState, useEffect } from "react";
-import { IMG_LOGO } from "@/data/images";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const LOGO_SRC = "/LNH-logo.png";
 
 const links = [
-  { label:"Inicio",        href:"#inicio" },
-  { label:"Nosotros",      href:"#nosotros" },
-  { label:"Servicios",     href:"#servicios" },
-  { label:"Habitaciones",  href:"#habitaciones" },
-  { label:"Galería",       href:"#galeria" },
-  { label:"Reseñas",       href:"#resenas" },
-  { label:"Ubicación",     href:"#mapa" },
-  { label:"Contacto",      href:"#contacto" },
+  { label:"Inicio",        href:"/",             section:"inicio" },
+  { label:"Nosotros",      href:"/nosotros",     section:"nosotros" },
+  { label:"Servicios",     href:"/servicios",    section:"servicios" },
+  { label:"Habitaciones",  href:"/habitaciones", section:"habitaciones" },
+  { label:"Galería",       href:"/galeria",      section:"galeria" },
+  { label:"Reseñas",       href:"/resenas",      section:"resenas" },
+  { label:"Ubicación",     href:"/ubicacion",    section:"mapa" },
+  { label:"Contacto",      href:"/contacto",     section:"contacto" },
 ];
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
   const [scrolled, setScrolled]     = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [active, setActive]         = useState("#inicio");
+  const [active, setActive]         = useState(location.pathname);
+
+  // Sync active with location changes
+  useEffect(() => { setActive(location.pathname); }, [location.pathname]);
 
   useEffect(() => {
+    if (!isHome) return;
     const onScroll = () => {
       setScrolled(window.scrollY > 60);
-      const ids = links.map(l => l.href.replace("#",""));
-      for (let i = ids.length - 1; i >= 0; i--) {
-        const el = document.getElementById(ids[i]);
+      for (let i = links.length - 1; i >= 0; i--) {
+        const el = document.getElementById(links[i].section);
         if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(`#${ids[i]}`); break;
+          setActive(links[i].href); break;
         }
       }
     };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (href: string) => {
+  const go = (href: string, section: string) => {
     setActive(href);
     setDrawerOpen(false);
     document.body.style.overflow = "";
-    document.getElementById(href.replace("#",""))?.scrollIntoView({ behavior:"smooth" });
+    if (isHome && href === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (isHome) {
+      setTimeout(() => {
+        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+      }, 80);
+    } else {
+      navigate(href);
+      window.scrollTo(0, 0);
+    }
+    if (!isHome) navigate(href);
   };
 
   const toggleDrawer = () => {
@@ -58,9 +82,9 @@ export default function Navbar() {
         borderBottom: scrolled ? "1px solid rgba(232,160,32,0.15)" : "none",
       }}>
         {/* Logo */}
-        <a href="#inicio" onClick={e=>{e.preventDefault();go("#inicio");}}
+        <a href="/" onClick={e=>{e.preventDefault();go("/","inicio");}}
           style={{ display:"flex", alignItems:"center", gap:"0.7rem", textDecoration:"none" }}>
-          <img src={IMG_LOGO} alt="Las Nubes Hostal" style={{
+          <img src={LOGO_SRC} alt="Las Nubes Hostal" style={{
             width:46, height:46, borderRadius:"50%",
             objectFit:"cover", objectPosition:"center",
             border:"2px solid var(--sun)",
@@ -76,7 +100,7 @@ export default function Navbar() {
         <ul className="nav-desktop" style={{ display:"flex", gap:"1.6rem", listStyle:"none", alignItems:"center" }}>
           {links.slice(1,-1).map(l => (
             <li key={l.href}>
-              <a href={l.href} onClick={e=>{e.preventDefault();go(l.href);}} style={{
+              <a href={l.href} onClick={e=>{e.preventDefault();go(l.href,l.section);}} style={{
                 color: active===l.href ? "var(--sun-lt)" : "rgba(250,247,242,0.75)",
                 textDecoration:"none", fontSize:"0.76rem", fontWeight:300,
                 letterSpacing:"0.1em", textTransform:"uppercase", transition:"color 0.2s",
@@ -89,7 +113,7 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <a href="#contacto" onClick={e=>{e.preventDefault();go("#contacto");}} className="btn-primary"
+            <a href="/contacto" onClick={e=>{e.preventDefault();go("/contacto","contacto");}} className="btn-primary"
               style={{ padding:"0.5rem 1.2rem", fontSize:"0.76rem" }}>
               Reservar
             </a>
@@ -128,14 +152,14 @@ export default function Navbar() {
       }}>
         {/* Logo in drawer */}
         <div style={{ display:"flex", alignItems:"center", gap:"0.7rem", marginBottom:"2rem", paddingBottom:"1.5rem", borderBottom:"1px solid rgba(232,160,32,0.2)" }}>
-          <img src={IMG_LOGO} alt="Las Nubes Hostal" style={{ width:42, height:42, borderRadius:"50%", objectFit:"cover", border:"2px solid var(--sun)" }} />
+          <img src={LOGO_SRC} alt="Las Nubes Hostal" style={{ width:42, height:42, borderRadius:"50%", objectFit:"cover", border:"2px solid var(--sun)" }} />
           <span style={{ fontFamily:"'Playfair Display',serif", color:"var(--cloud)", fontSize:"0.95rem" }}>Las Nubes Hostal</span>
         </div>
 
         <ul style={{ listStyle:"none" }}>
           {links.map(l=>(
             <li key={l.href} style={{ borderBottom:"1px solid rgba(255,255,255,0.07)" }}>
-              <a href={l.href} onClick={e=>{e.preventDefault();go(l.href);}} style={{
+              <a href={l.href} onClick={e=>{e.preventDefault();go(l.href,l.section);}} style={{
                 display:"block", padding:"0.95rem 0",
                 color: active===l.href ? "var(--sun-lt)" : "rgba(245,242,237,0.82)",
                 textDecoration:"none", fontSize:"0.92rem",
@@ -146,7 +170,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a href="#contacto" onClick={e=>{e.preventDefault();go("#contacto");}} className="btn-primary"
+        <a href="/contacto" onClick={e=>{e.preventDefault();go("/contacto","contacto");}} className="btn-primary"
           style={{ marginTop:"2rem", display:"block", textAlign:"center", padding:"1rem" }}>
           Hacer una Reserva →
         </a>

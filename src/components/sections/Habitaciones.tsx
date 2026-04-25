@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/useReveal";
+import { useNavigate } from "react-router-dom";
 import { IMG_ROOM_DOUBLE, IMG_FIREPLACE_DAY, IMG_INTERIOR_HALL, IMG_EXT_TERRACE2 } from "@/data/images";
 
 const rooms = [
@@ -47,6 +48,7 @@ const amenities = [
 
 export default function Habitaciones() {
   const ref = useReveal();
+  const navigate = useNavigate();
   return (
     <section id="habitaciones" ref={ref as React.RefObject<HTMLElement>}
       style={{ background:"var(--cloud)", padding:"6rem clamp(1.5rem,6vw,5rem)" }}>
@@ -86,11 +88,11 @@ export default function Habitaciones() {
                   <span key={t} style={{ background:"var(--khaki)", color:"var(--forest)", fontSize:"0.7rem", padding:"0.25rem 0.7rem", borderRadius:20 }}>{t}</span>
                 ))}
               </div>
-              <a href="#contacto" className="btn-forest"
-                onClick={e=>{e.preventDefault();document.getElementById("contacto")?.scrollIntoView({behavior:"smooth"});}}
-                style={{ display:"block", textAlign:"center" }}>
+              <button className="btn-forest"
+                onClick={() => { navigate("/contacto"); window.scrollTo(0,0); }}
+                style={{ display:"block", textAlign:"center", width:"100%", cursor:"pointer", fontFamily:"'Lato',sans-serif" }}>
                 Consultar disponibilidad →
-              </a>
+              </button>
             </div>
           </div>
         ))}

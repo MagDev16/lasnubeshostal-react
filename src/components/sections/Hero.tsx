@@ -1,9 +1,8 @@
-import { IMG_RAINBOW } from "@/data/images";
 
 export default function Hero() {
   return (
     <section id="inicio" className="page-hero page-hero-home">
-      <img src={IMG_RAINBOW} alt="Las Nubes Hostal con arcoíris" style={{
+      <img src="/baru.jpg" alt="Volcán Barú desde Las Nubes Hostal" style={{
         position:"absolute", inset:0, width:"100%", height:"100%",
         objectFit:"cover", objectPosition:"center 55%",
       }} />

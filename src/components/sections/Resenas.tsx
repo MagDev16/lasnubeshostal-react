@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
 const ratings = [
-  { label:"Personal",                score:8.7, pct:87 },
-  { label:"Instalaciones y servicios", score:8.8, pct:88 },
-  { label:"Limpieza",                score:8.7, pct:87 },
-  { label:"Confort",                 score:8.4, pct:84 },
-  { label:"Relación calidad-precio", score:8.6, pct:86 },
-  { label:"Ubicación",               score:8.6, pct:86 },
-  { label:"WiFi",                    score:10,  pct:100, accent:true },
+  { label:"Personal",                score:4.4, pct:87 },
+  { label:"Instalaciones y servicios", score:4.4, pct:88 },
+  { label:"Limpieza",                score:4.4, pct:87 },
+  { label:"Confort",                 score:4.2, pct:84 },
+  { label:"Relación calidad-precio", score:4.3, pct:86 },
+  { label:"Ubicación",               score:4.3, pct:86 },
+  { label:"WiFi",                    score:5.0, pct:100, accent:true },
 ];
 
 const reviews = [
@@ -20,9 +20,23 @@ const reviews = [
   { name:"Alejandra",origin:"🇨🇴 Colombia",   initial:"A", text:"Increíble experiencia. La chimenea por las noches con esa vista al volcán no tiene precio. Claudio es un anfitrión de primera. Muy recomendado para quienes buscan desconectarse." },
 ];
 
-function ReviewCard({ review }: { review: typeof reviews[0] }) {
+function StarRating({ score }: { score: number }) {
   return (
-    <div style={{ background:"white", padding:"2rem", borderRadius:2, borderLeft:"3px solid var(--moss)", boxShadow:"0 2px 12px rgba(0,0,0,0.06)", flex:"0 0 calc(50% - 0.75rem)", minWidth:0 }}>
+    <span style={{ color:"var(--ember)", fontSize:"0.85rem", letterSpacing:1 }}>
+      {[1,2,3,4,5].map(s => (
+        <span key={s} style={{ opacity: s <= Math.round(score) ? 1 : 0.25 }}>★</span>
+      ))}
+    </span>
+  );
+}
+
+function ReviewCard({ review, width }: { review: typeof reviews[0]; width: string }) {
+  return (
+    <div style={{
+      background:"white", padding:"2rem", borderRadius:2,
+      borderLeft:"3px solid var(--moss)", boxShadow:"0 2px 12px rgba(0,0,0,0.06)",
+      flex:`0 0 ${width}`, minWidth:0, boxSizing:"border-box",
+    }}>
       <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"3rem", color:"var(--sage)", lineHeight:0.5, display:"block", marginBottom:"0.8rem" }}>"</span>
       <p style={{ fontSize:"0.92rem", lineHeight:1.7, color:"#5A5550", fontStyle:"italic", marginBottom:"1.2rem" }}>{review.text}</p>
       <div style={{ display:"flex", alignItems:"center", gap:"0.8rem" }}>
@@ -30,6 +44,7 @@ function ReviewCard({ review }: { review: typeof reviews[0] }) {
         <div>
           <div style={{ fontSize:"0.85rem", fontWeight:700, color:"var(--dark)" }}>{review.name}</div>
           <div style={{ fontSize:"0.75rem", color:"#999" }}>{review.origin}</div>
+          <StarRating score={5} />
         </div>
       </div>
     </div>
@@ -41,21 +56,25 @@ export default function Resenas() {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
 
-  // Desktop shows 2 at a time, mobile shows 1
-  const [visibleCount, setVisibleCount] = useState(2);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    const update = () => setVisibleCount(window.innerWidth >= 768 ? 2 : 1);
+    const update = () => setIsMobile(window.innerWidth < 768);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  // Mobile: 1 item, Desktop: 2 items
+  const visibleCount = isMobile ? 1 : 2;
   const total = reviews.length;
-  const maxIndex = total - visibleCount;
+  const totalPages = total - visibleCount + 1;
 
-  const goTo = (idx: number) => setCurrent(Math.max(0, Math.min(idx, maxIndex)));
-  const next = () => goTo(current + 1 > maxIndex ? 0 : current + 1);
-  const prev = () => goTo(current - 1 < 0 ? maxIndex : current - 1);
+  // Reset current when switching between mobile/desktop
+  useEffect(() => { setCurrent(0); }, [isMobile]);
+
+  const goTo = (idx: number) => setCurrent(Math.max(0, Math.min(idx, totalPages - 1)));
+  const next = () => goTo(current + 1 >= totalPages ? 0 : current + 1);
+  const prev = () => goTo(current - 1 < 0 ? totalPages - 1 : current - 1);
 
   const resetTimer = () => {
     clearInterval(timerRef.current);
@@ -63,9 +82,8 @@ export default function Resenas() {
   };
   useEffect(() => { resetTimer(); return () => clearInterval(timerRef.current); }, [current, visibleCount]);
 
-  const cardWidthPct = visibleCount === 2 ? 50 : 100;
-  const gapPx = visibleCount === 2 ? 24 : 0;
-  const translateX = current * (cardWidthPct + (gapPx / (window?.innerWidth || 800)) * 100 / visibleCount);
+  const cardWidth = isMobile ? "100%" : "calc(50% - 0.75rem)";
+  const gapPx = isMobile ? 0 : 24;
 
   return (
     <section id="resenas" ref={ref as React.RefObject<HTMLElement>} style={{ background:"var(--cloud)", padding:"6rem clamp(1.5rem,6vw,5rem)", overflow:"hidden" }}>
@@ -77,8 +95,9 @@ export default function Resenas() {
       {/* Ratings */}
       <div className="reveal" style={{ display:"flex", gap:"3rem", flexWrap:"wrap", alignItems:"center", marginBottom:"3rem" }}>
         <div style={{ textAlign:"center" }}>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"5rem", color:"var(--forest)", lineHeight:1 }}>8.7</div>
-          <div style={{ fontSize:"0.82rem", color:"var(--ember)", letterSpacing:"0.1em", textTransform:"uppercase" }}>Fabuloso · 29 reseñas</div>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"5rem", color:"var(--forest)", lineHeight:1 }}>4.4</div>
+          <StarRating score={4.4} />
+          <div style={{ fontSize:"0.82rem", color:"var(--ember)", letterSpacing:"0.1em", textTransform:"uppercase", marginTop:"0.3rem" }}>Fabuloso · 29 reseñas</div>
         </div>
         <div style={{ flex:1, minWidth:240 }}>
           {ratings.map(r => (
@@ -87,16 +106,23 @@ export default function Resenas() {
               <div style={{ flex:1, height:6, background:"#e0ddd8", borderRadius:3, overflow:"hidden" }}>
                 <div style={{ height:"100%", width:`${r.pct}%`, background: r.accent ? "var(--ember)" : "var(--forest)", borderRadius:3 }} />
               </div>
-              <span style={{ fontSize:"0.8rem", fontWeight:700, color:"var(--dark)", width:28, textAlign:"right" }}>{r.score}</span>
+              <span style={{ fontSize:"0.8rem", fontWeight:700, color:"var(--dark)", width:28, textAlign:"right" }}>{r.score.toFixed(1)}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Carousel — 2 on desktop, 1 on mobile */}
+      {/* Carousel */}
       <div style={{ overflow:"hidden" }}>
-        <div style={{ display:"flex", gap:"1.5rem", transition:"transform 0.7s cubic-bezier(0.4,0,0.2,1)", transform:`translateX(calc(-${current} * (${cardWidthPct}% + ${gapPx}px)))` }}>
-          {reviews.map(r => <ReviewCard key={r.name} review={r} />)}
+        <div style={{
+          display:"flex",
+          gap: isMobile ? 0 : "1.5rem",
+          transition:"transform 0.7s cubic-bezier(0.4,0,0.2,1)",
+          transform: isMobile
+            ? `translateX(calc(-${current} * 100%))`
+            : `translateX(calc(-${current} * (50% + ${gapPx}px)))`,
+        }}>
+          {reviews.map(r => <ReviewCard key={r.name} review={r} width={cardWidth} />)}
         </div>
       </div>
 
@@ -106,7 +132,7 @@ export default function Resenas() {
           onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.background="var(--forest)";(e.currentTarget as HTMLElement).style.color="white";}}
           onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.background="transparent";(e.currentTarget as HTMLElement).style.color="var(--forest)";}}>←</button>
         <div style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
-          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+          {Array.from({ length: totalPages }).map((_, i) => (
             <button key={i} onClick={()=>{goTo(i);resetTimer();}} style={{ width: i===current ? 20 : 8, height:8, borderRadius:4, background: i===current ? "var(--forest)" : "#d0ccc7", border:"none", cursor:"pointer", transition:"background 0.3s, width 0.3s" }} />
           ))}
         </div>

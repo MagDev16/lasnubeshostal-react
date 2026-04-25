@@ -25,4 +25,4 @@ export const IMG_IMG6 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYS
 // Hero: best exterior shot - rainbow with hostal
 export const IMG_HERO = IMG_RAINBOW;
 // Logo
-export const IMG_LOGO = IMG_LOGO;
+export const IMG_INSTAGRAM = IMG_EXT_GARDEN;

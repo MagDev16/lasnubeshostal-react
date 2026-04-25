@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import {
   IMG_RAINBOW, IMG_EXT_GARDEN, IMG_FIREPLACE_DAY, IMG_EXT_TERRACE2,
@@ -18,8 +19,89 @@ const photos = [
   { src: IMG_EXTERIOR,     alt: "Exterior del hostal con jardín y volcán" },
 ];
 
+function Lightbox({ photo, onClose, onPrev, onNext }: {
+  photo: typeof photos[0];
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onPrev();
+      if (e.key === "ArrowRight") onNext();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <div onClick={onClose} style={{
+      position:"fixed", inset:0, zIndex:1000,
+      background:"rgba(0,0,0,0.92)", display:"flex",
+      alignItems:"center", justifyContent:"center",
+    }}>
+      {/* Close */}
+      <button onClick={onClose} style={{
+        position:"absolute", top:"1.5rem", right:"1.5rem",
+        background:"rgba(255,255,255,0.15)", border:"none", color:"white",
+        width:42, height:42, borderRadius:"50%", cursor:"pointer",
+        fontSize:"1.3rem", display:"flex", alignItems:"center", justifyContent:"center",
+      }}>✕</button>
+
+      {/* Prev */}
+      <button onClick={e=>{e.stopPropagation();onPrev();}} style={{
+        position:"absolute", left:"1.5rem",
+        background:"rgba(255,255,255,0.15)", border:"none", color:"white",
+        width:48, height:48, borderRadius:"50%", cursor:"pointer",
+        fontSize:"1.4rem", display:"flex", alignItems:"center", justifyContent:"center",
+      }}>←</button>
+
+      {/* Image */}
+      <img
+        src={photo.src}
+        alt={photo.alt}
+        onClick={e=>e.stopPropagation()}
+        style={{
+          maxWidth:"90vw", maxHeight:"88vh",
+          objectFit:"contain", borderRadius:2,
+          boxShadow:"0 8px 60px rgba(0,0,0,0.6)",
+        }}
+      />
+
+      {/* Next */}
+      <button onClick={e=>{e.stopPropagation();onNext();}} style={{
+        position:"absolute", right:"1.5rem",
+        background:"rgba(255,255,255,0.15)", border:"none", color:"white",
+        width:48, height:48, borderRadius:"50%", cursor:"pointer",
+        fontSize:"1.4rem", display:"flex", alignItems:"center", justifyContent:"center",
+      }}>→</button>
+
+      {/* Caption */}
+      <div style={{
+        position:"absolute", bottom:"1.5rem", left:"50%",
+        transform:"translateX(-50%)",
+        color:"rgba(255,255,255,0.7)", fontSize:"0.82rem",
+        background:"rgba(0,0,0,0.4)", padding:"0.4rem 1rem", borderRadius:20,
+        whiteSpace:"nowrap",
+      }}>{photo.alt}</div>
+    </div>
+  );
+}
+
 export default function Galeria() {
   const ref = useReveal();
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  const openLightbox = (i: number) => setLightboxIdx(i);
+  const closeLightbox = () => setLightboxIdx(null);
+  const prevPhoto = () => setLightboxIdx(i => i !== null ? (i - 1 + photos.length) % photos.length : null);
+  const nextPhoto = () => setLightboxIdx(i => i !== null ? (i + 1) % photos.length : null);
+
   return (
     <section id="galeria" ref={ref as React.RefObject<HTMLElement>}
       style={{ background:"var(--cream)", padding:"6rem clamp(1.5rem,6vw,5rem)" }}>
@@ -31,7 +113,7 @@ export default function Galeria() {
         Cada rincón de Las Nubes Hostal tiene su propia historia que contar.
       </p>
 
-      {/* Main grid — 3 cols, first image spans 2 */}
+      {/* Main grid */}
       <div className="galeria-grid" style={{
         display:"grid",
         gridTemplateColumns:"repeat(3,1fr)",
@@ -39,10 +121,10 @@ export default function Galeria() {
         gap:"0.75rem",
       }}>
         {photos.map((p, i) => (
-          <div key={i} className="reveal" style={{
+          <div key={i} className="reveal" onClick={() => openLightbox(i)} style={{
             overflow:"hidden", borderRadius:2, position:"relative",
             gridColumn: i===0 ? "span 2" : undefined,
-            transitionDelay:`${i*0.05}s`, cursor:"pointer",
+            transitionDelay:`${i*0.05}s`, cursor:"zoom-in",
           }}>
             <img src={p.src} alt={p.alt} style={{
               width:"100%", height:"100%", objectFit:"cover", display:"block",
@@ -50,7 +132,6 @@ export default function Galeria() {
             }}
             onMouseEnter={e=>(e.currentTarget.style.transform="scale(1.06)")}
             onMouseLeave={e=>(e.currentTarget.style.transform="scale(1)")} />
-            {/* Hover overlay */}
             <div style={{
               position:"absolute", inset:0,
               background:"linear-gradient(to top,rgba(26,42,26,0.55) 0%,transparent 55%)",
@@ -67,6 +148,15 @@ export default function Galeria() {
         <a href="https://instagram.com/lasnubeshostal" target="_blank" rel="noreferrer"
           style={{ color:"var(--moss)", textDecoration:"none" }}>@lasnubeshostal</a>
       </p>
+
+      {lightboxIdx !== null && (
+        <Lightbox
+          photo={photos[lightboxIdx]}
+          onClose={closeLightbox}
+          onPrev={prevPhoto}
+          onNext={nextPhoto}
+        />
+      )}
     </section>
   );
 }
