@@ -47,18 +47,20 @@ function MobileCarousel() {
   );
 }
 
-export default function Servicios() {
+export default function Servicios({ hideHeader }: { hideHeader?: boolean } = {}) {
   const ref = useReveal();
   return (
     <section id="servicios" ref={ref as React.RefObject<HTMLElement>}
       style={{ background:"var(--forest)", padding:"6rem clamp(1.5rem,6vw,5rem)" }}>
-      <span className="section-tag" style={{ color:"var(--sun-lt)" }}>Comodidades</span>
-      <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--cloud)", lineHeight:1.2, marginBottom:"0.8rem" }}>
-        Todo lo que<br />necesitas aquí
-      </h2>
-      <p style={{ color:"rgba(250,247,242,0.65)", fontWeight:300, fontSize:"1rem" }}>
-        Puntuación de servicios: 8.8 — Diseñados para que tu estancia sea perfecta.
-      </p>
+      {!hideHeader && <>
+        <span className="section-tag" style={{ color:"var(--sun-lt)" }}>Comodidades</span>
+        <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--cloud)", lineHeight:1.2, marginBottom:"0.8rem" }}>
+          Todo lo que<br />necesitas aquí
+        </h2>
+        <p style={{ color:"rgba(250,247,242,0.65)", fontWeight:300, fontSize:"1rem" }}>
+          Diseñados para hacer tu estancia perfecta.
+        </p>
+      </>}
 
       {/* Desktop grid */}
       <div className="svc-desktop" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))", gap:"1.5rem", marginTop:"3rem" }}>

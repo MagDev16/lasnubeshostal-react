@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 
 const WA_NUMBER = "50768109090";
 
-export default function Contacto() {
+export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) {
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -45,13 +45,15 @@ export default function Contacto() {
 
   return (
     <section id="contacto" style={{ background: "var(--cream)", padding: "6rem clamp(1.5rem, 6vw, 5rem)" }}>
-      <span className="section-tag">¿Listo para tu aventura?</span>
-      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem,4vw,3rem)", color: "var(--dark)", lineHeight: 1.2, marginBottom: "0.8rem" }}>
-        Haz tu <em style={{ color: "var(--moss)" }}>reserva</em>
-      </h2>
-      <p style={{ fontWeight: 300, fontSize: "1rem", color: "var(--warm-mid)", marginBottom: "3rem" }}>
-        Escríbenos y te respondemos enseguida. También puedes llamar o escribir por WhatsApp.
-      </p>
+      {!hideHeader && <>
+        <span className="section-tag">¿Listo para tu aventura?</span>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem,4vw,3rem)", color: "var(--dark)", lineHeight: 1.2, marginBottom: "0.8rem" }}>
+          Haz tu <em style={{ color: "var(--moss)" }}>reserva</em>
+        </h2>
+        <p style={{ fontWeight: 300, fontSize: "1rem", color: "var(--warm-mid)", marginBottom: "3rem" }}>
+          Escríbenos y te respondemos enseguida. También puedes llamar o escribir por WhatsApp.
+        </p>
+      </>}
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "5rem", alignItems: "start" }}>
         {/* Form */}

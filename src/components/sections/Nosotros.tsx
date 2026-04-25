@@ -8,7 +8,7 @@ const features = [
   { icon: "🌿", title: "Jardín y terraza",     desc: "Vistas al jardín y a la montaña" },
 ];
 
-export default function Nosotros() {
+export default function Nosotros({ hideHeader }: { hideHeader?: boolean } = {}) {
   const ref = useReveal();
 
   return (
@@ -37,11 +37,13 @@ export default function Nosotros() {
 
       {/* Text */}
       <div className="reveal" style={{ transitionDelay: "0.15s" }}>
-        <span className="section-tag">Nuestra Historia</span>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem,4vw,3rem)", lineHeight: 1.2, marginBottom: "1.2rem", color: "var(--dark)" }}>
-          Un proyecto<br />
-          de familia <em style={{ fontStyle: "italic", color: "var(--moss)" }}>García</em>
-        </h2>
+        {!hideHeader && <>
+          <span className="section-tag">Nuestra Historia</span>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2rem,4vw,3rem)", lineHeight: 1.2, marginBottom: "1.2rem", color: "var(--dark)" }}>
+            Un proyecto<br />
+            de familia <em style={{ fontStyle: "italic", color: "var(--moss)" }}>García</em>
+          </h2>
+        </>}
         <div style={{ width: "3rem", height: "2px", background: "var(--ember)", marginBottom: "1.4rem" }} />
         <p style={{ fontWeight: 300, fontSize: "1.02rem", lineHeight: 1.8, color: "var(--warm-mid)", marginBottom: "1rem" }}>
           Las Nubes Hostal nació del sueño de los hermanos García: crear un refugio auténtico donde viajeros

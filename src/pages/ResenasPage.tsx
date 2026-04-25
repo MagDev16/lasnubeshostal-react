@@ -13,7 +13,7 @@ export default function ResenasPage() {
         image={IMG_EXT_TERRACE2}
         imagePosition="center 50%"
       />
-      <Resenas />
+      <Resenas hideHeader />
     </PageLayout>
   );
 }

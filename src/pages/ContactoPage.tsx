@@ -13,7 +13,7 @@ export default function ContactoPage() {
         image="/baru.jpg"
         imagePosition="center 60%"
       />
-      <Contacto />
+      <Contacto hideHeader />
       <Mapa />
     </PageLayout>
   );

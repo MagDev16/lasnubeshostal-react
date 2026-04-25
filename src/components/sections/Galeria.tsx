@@ -93,7 +93,7 @@ function Lightbox({ photo, onClose, onPrev, onNext }: {
   );
 }
 
-export default function Galeria() {
+export default function Galeria({ hideHeader }: { hideHeader?: boolean } = {}) {
   const ref = useReveal();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
@@ -105,13 +105,15 @@ export default function Galeria() {
   return (
     <section id="galeria" ref={ref as React.RefObject<HTMLElement>}
       style={{ background:"var(--cream)", padding:"6rem clamp(1.5rem,6vw,5rem)" }}>
-      <span className="section-tag">Imágenes</span>
-      <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"0.8rem" }}>
-        Vive el <em style={{ color:"var(--moss)" }}>paisaje</em>
-      </h2>
-      <p style={{ fontWeight:300, fontSize:"1rem", color:"var(--warm-mid)", marginBottom:"2.5rem" }}>
-        Cada rincón de Las Nubes Hostal tiene su propia historia que contar.
-      </p>
+      {!hideHeader && <>
+        <span className="section-tag">Imágenes</span>
+        <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"0.8rem" }}>
+          Vive el <em style={{ color:"var(--moss)" }}>paisaje</em>
+        </h2>
+        <p style={{ fontWeight:300, fontSize:"1rem", color:"var(--warm-mid)", marginBottom:"2.5rem" }}>
+          Cada rincón de Las Nubes Hostal tiene su propia historia que contar.
+        </p>
+      </>}
 
       {/* Main grid */}
       <div className="galeria-grid" style={{

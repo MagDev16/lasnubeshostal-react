@@ -13,7 +13,7 @@ export default function GaleriaPage() {
         image={IMG_RAINBOW}
         imagePosition="center 55%"
       />
-      <Galeria />
+      <Galeria hideHeader />
     </PageLayout>
   );
 }

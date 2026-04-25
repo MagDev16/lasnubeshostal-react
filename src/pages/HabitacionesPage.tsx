@@ -13,7 +13,7 @@ export default function HabitacionesPage() {
         image={IMG_ROOM_DOUBLE}
         imagePosition="center 50%"
       />
-      <Habitaciones />
+      <Habitaciones hideHeader />
     </PageLayout>
   );
 }

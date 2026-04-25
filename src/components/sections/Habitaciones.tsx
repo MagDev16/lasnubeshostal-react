@@ -46,19 +46,21 @@ const amenities = [
   {icon:"🅿️",label:"Parking gratuito"},
 ];
 
-export default function Habitaciones() {
+export default function Habitaciones({ hideHeader }: { hideHeader?: boolean } = {}) {
   const ref = useReveal();
   const navigate = useNavigate();
   return (
     <section id="habitaciones" ref={ref as React.RefObject<HTMLElement>}
       style={{ background:"var(--cloud)", padding:"6rem clamp(1.5rem,6vw,5rem)" }}>
-      <span className="section-tag">Alojamiento</span>
-      <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"0.8rem" }}>
-        Habitaciones<br /><em style={{ color:"var(--moss)" }}>con alma</em>
-      </h2>
-      <p style={{ fontWeight:300, fontSize:"1rem", color:"var(--warm-mid)", marginBottom:"3rem", maxWidth:560 }}>
-        Tres espacios únicos con baño privado, vistas a la montaña y toda la calidez de un hogar familiar panameño.
-      </p>
+      {!hideHeader && <>
+        <span className="section-tag">Alojamiento</span>
+        <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"0.8rem" }}>
+          Habitaciones<br /><em style={{ color:"var(--moss)" }}>con alma</em>
+        </h2>
+        <p style={{ fontWeight:300, fontSize:"1rem", color:"var(--warm-mid)", marginBottom:"3rem", maxWidth:560 }}>
+          Tres espacios únicos con baño privado, vistas a la montaña y toda la calidez de un hogar familiar panameño.
+        </p>
+      </>}
 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:"2rem", marginBottom:"4rem" }}>
         {rooms.map((r,i) => (

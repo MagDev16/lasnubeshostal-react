@@ -14,7 +14,10 @@
       "Bash(git add *)",
       "Bash(git commit -m 'fix: navbar siempre navega a rutas en vez de scroll en home *)",
       "Bash(git push *)",
-      "Bash(git commit -m 'feat: página dedicada para /resenas con PageHero y carrusel *)"
+      "Bash(git commit -m 'feat: página dedicada para /resenas con PageHero y carrusel *)",
+      "Bash(git commit -m 'perf+fix: imágenes a public/ y formulario conectado con WhatsApp *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git commit -m 'fix: eliminar duplicación de títulos, unificar rating 4.4/5, corregir hero mobile *)"
     ]
   }
 }

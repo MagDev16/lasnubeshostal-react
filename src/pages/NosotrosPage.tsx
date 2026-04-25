@@ -13,7 +13,7 @@ export default function NosotrosPage() {
         image={IMG_EXTERIOR}
         imagePosition="center 60%"
       />
-      <Nosotros />
+      <Nosotros hideHeader />
     </PageLayout>
   );
 }

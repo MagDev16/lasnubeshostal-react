@@ -51,7 +51,7 @@ function ReviewCard({ review, width }: { review: typeof reviews[0]; width: strin
   );
 }
 
-export default function Resenas() {
+export default function Resenas({ hideHeader }: { hideHeader?: boolean } = {}) {
   const ref = useReveal();
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
@@ -87,10 +87,12 @@ export default function Resenas() {
 
   return (
     <section id="resenas" ref={ref as React.RefObject<HTMLElement>} style={{ background:"var(--cloud)", padding:"6rem clamp(1.5rem,6vw,5rem)", overflow:"hidden" }}>
-      <span className="section-tag">Lo que dicen nuestros huéspedes</span>
-      <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"2.5rem" }}>
-        Reseñas <em style={{ color:"var(--moss)" }}>reales</em>
-      </h2>
+      {!hideHeader && <>
+        <span className="section-tag">Lo que dicen nuestros huéspedes</span>
+        <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(2rem,4vw,3rem)", color:"var(--dark)", lineHeight:1.2, marginBottom:"2.5rem" }}>
+          Reseñas <em style={{ color:"var(--moss)" }}>reales</em>
+        </h2>
+      </>}
 
       {/* Ratings */}
       <div className="reveal" style={{ display:"flex", gap:"3rem", flexWrap:"wrap", alignItems:"center", marginBottom:"3rem" }}>

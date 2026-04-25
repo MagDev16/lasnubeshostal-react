@@ -13,7 +13,7 @@ export default function ServiciosPage() {
         image={IMG_FIREPLACE_DAY}
         imagePosition="center 40%"
       />
-      <Servicios />
+      <Servicios hideHeader />
     </PageLayout>
   );
 }

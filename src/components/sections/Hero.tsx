@@ -37,15 +37,18 @@ export default function Hero() {
           </a>
         </div>
       </div>
-      <div className="animate-bounce-y" style={{
+      <div className="animate-bounce-y hero-scroll-hint" style={{
         position:"absolute", bottom:"2.5rem", left:"50%",
         display:"flex", flexDirection:"column", alignItems:"center", gap:"0.5rem",
         color:"rgba(255,255,255,0.65)", fontSize:"0.68rem", letterSpacing:"0.22em",
-        textTransform:"uppercase", zIndex:2,
+        textTransform:"uppercase", zIndex:2, transform:"translateX(-50%)",
       }}>
         Descubre
         <div style={{ width:1, height:40, background:"rgba(255,255,255,0.4)" }} />
       </div>
+      <style>{`
+        @media (max-height: 600px), (max-width: 480px) { .hero-scroll-hint { display: none !important; } }
+      `}</style>
     </section>
   );
 }

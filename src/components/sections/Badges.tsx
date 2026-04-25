@@ -1,5 +1,5 @@
 const badges = [
-  {icon:"⭐",score:"8.7",text:"Puntuación Fabulosa · 29 reseñas"},
+  {icon:"⭐",score:"4.4",text:"Puntuación · 29 reseñas · ★★★★★"},
   {icon:"📶",score:"10", text:"WiFi gratis · Puntuación perfecta"},
   {icon:"🐾",score:"✓",  text:"Se admiten mascotas · Gratis"},
   {icon:"🅿️",score:"✓",  text:"Parking privado · Gratis"},
