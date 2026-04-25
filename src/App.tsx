@@ -20,6 +20,7 @@ import NosotrosPage     from "@/pages/NosotrosPage";
 import ServiciosPage    from "@/pages/ServiciosPage";
 import HabitacionesPage from "@/pages/HabitacionesPage";
 import GaleriaPage      from "@/pages/GaleriaPage";
+import ResenasPage      from "@/pages/ResenasPage";
 import ContactoPage     from "@/pages/ContactoPage";
 
 function ScrollToTop() {
@@ -58,7 +59,7 @@ export default function App() {
         <Route path="/servicios"    element={<ServiciosPage />} />
         <Route path="/habitaciones" element={<HabitacionesPage />} />
         <Route path="/galeria"      element={<GaleriaPage />} />
-        <Route path="/resenas"      element={<HomePage />} />
+        <Route path="/resenas"      element={<ResenasPage />} />
         <Route path="/ubicacion"    element={<ContactoPage />} />
         <Route path="/contacto"     element={<ContactoPage />} />
       </Routes>
