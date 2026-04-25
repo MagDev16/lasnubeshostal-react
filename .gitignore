@@ -6,3 +6,4 @@ bundle.html
 src/assets/img*.b64
 .env
 .env.local
+.vercel
