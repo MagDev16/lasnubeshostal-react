@@ -1,12 +1,39 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+
+const WA_NUMBER = "50768109090";
 
 export default function Contacto() {
   const [sent, setSent] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+
+    const nombre   = data.get("nombre")   as string;
+    const email    = data.get("email")    as string;
+    const llegada  = data.get("llegada")  as string;
+    const salida   = data.get("salida")   as string;
+    const hab      = data.get("hab")      as string;
+    const mensaje  = data.get("mensaje")  as string;
+
+    const lines = [
+      "📋 *Nueva consulta desde lasnubeshostal.com*",
+      "",
+      `👤 *Nombre:* ${nombre}`,
+      `📧 *Email:* ${email}`,
+      llegada ? `📅 *Llegada:* ${llegada}` : null,
+      salida  ? `📅 *Salida:*  ${salida}`  : null,
+      `🛏 *Habitación:* ${hab}`,
+      mensaje ? `💬 *Mensaje:* ${mensaje}` : null,
+    ].filter(Boolean).join("\n");
+
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+
     setSent(true);
-    (e.target as HTMLFormElement).reset();
+    form.reset();
   };
 
   const inputStyle: React.CSSProperties = {
@@ -28,27 +55,27 @@ export default function Contacto() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "5rem", alignItems: "start" }}>
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <form ref={formRef} onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Nombre</label>
-              <input type="text" placeholder="Tu nombre" required style={inputStyle}
+              <input name="nombre" type="text" placeholder="Tu nombre" required style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
                 onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Email</label>
-              <input type="email" placeholder="tu@email.com" required style={inputStyle}
+              <input name="email" type="email" placeholder="tu@email.com" required style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
                 onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
             </div>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            {["Llegada", "Salida"].map(lbl => (
+            {[{lbl:"Llegada", name:"llegada"}, {lbl:"Salida", name:"salida"}].map(({lbl, name}) => (
               <div key={lbl} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>{lbl}</label>
-                <input type="date" style={inputStyle}
+                <input name={name} type="date" style={inputStyle}
                   onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
                   onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
               </div>
@@ -57,7 +84,7 @@ export default function Contacto() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
             <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Habitación de interés</label>
-            <select style={inputStyle}
+            <select name="hab" style={inputStyle}
               onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
               onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }}>
               <option>Habitación Familiar (4 personas)</option>
@@ -69,7 +96,7 @@ export default function Contacto() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
             <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Mensaje</label>
-            <textarea placeholder="¿Viajan con mascotas, en familia, les interesa un tour de senderismo? Cuéntanos..." rows={4}
+            <textarea name="mensaje" placeholder="¿Viajan con mascotas, en familia, les interesa un tour de senderismo? Cuéntanos..." rows={4}
               style={{ ...inputStyle, resize: "vertical" }}
               onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
               onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
@@ -85,11 +112,12 @@ export default function Contacto() {
           }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="#a8522a"; (e.currentTarget as HTMLElement).style.transform="translateY(-2px)"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--ember)"; (e.currentTarget as HTMLElement).style.transform="translateY(0)"; }}
-          >Enviar consulta →</button>
+          >💬 Enviar por WhatsApp →</button>
 
           {sent && (
             <div style={{ color: "var(--moss)", fontSize: "0.9rem", padding: "0.8rem", background: "rgba(74,124,89,0.08)", borderRadius: 2 }}>
-              ✓ ¡Mensaje enviado! Te contactamos en menos de 24 horas.
+              ✓ ¡Se abrió WhatsApp con tu consulta! Si no se abrió, escríbenos directamente al{" "}
+              <a href="https://wa.me/50768109090" target="_blank" rel="noreferrer" style={{ color:"var(--forest)", fontWeight:700 }}>+507 6810 9090</a>.
             </div>
           )}
         </form>
