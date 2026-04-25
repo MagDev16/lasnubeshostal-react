@@ -66,12 +66,12 @@ export default function Habitaciones({ hideHeader }: { hideHeader?: boolean } = 
         {rooms.map((r,i) => (
           <div key={r.name} className="reveal" style={{
             borderRadius:2, overflow:"hidden",
-            boxShadow:"0 4px 24px rgba(0,0,0,0.09)",
-            background:"white", transition:"transform 0.3s, box-shadow 0.3s",
+            boxShadow:"var(--shadow-md)",
+            background:"var(--cloud)", transition:"transform 0.3s, box-shadow 0.3s",
             transitionDelay:`${i*0.1}s`,
           }}
-          onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="translateY(-6px)";(e.currentTarget as HTMLElement).style.boxShadow="0 16px 48px rgba(0,0,0,0.14)";}}
-          onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="translateY(0)";(e.currentTarget as HTMLElement).style.boxShadow="0 4px 24px rgba(0,0,0,0.09)";}}>
+          onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="translateY(-6px)";(e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-lg)";}}
+          onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="translateY(0)";(e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-md)";}}>
             <div style={{ position:"relative", height:240, overflow:"hidden" }}>
               <img src={r.img} alt={r.name} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block", transition:"transform 0.5s" }}
                 onMouseEnter={e=>(e.currentTarget.style.transform="scale(1.05)")}

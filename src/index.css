@@ -34,6 +34,34 @@
 
   /* Ember (CTA) — kept from original but warmed */
   --ember:     #B85A1A;
+  --ember-dark:#a8522a;
+
+  /* Text semantic */
+  --text-muted:    #999999;
+  --text-secondary:#5A5550;
+
+  /* Borders & dividers */
+  --input-border:  #d8d4cd;
+  --divider:       #e8e4dd;
+  --divider-light: #e0ddd8;
+
+  /* Border radius */
+  --radius-sm:   2px;
+  --radius-md:   4px;
+  --radius-pill: 20px;
+  --radius-full: 50%;
+
+  /* Spacing */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 3rem;
+  --space-xl: 6rem;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.09);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.14);
 }
 
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -109,6 +137,13 @@ main {
 
 /* ── CAROUSEL ── */
 .carousel-track { display:flex; gap:1.5rem; transition:transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── FOCUS VISIBLE (accessibility) ── */
+:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
 
 /* ── BUTTONS ── */
 .btn-primary {

@@ -17,7 +17,9 @@
       "Bash(git commit -m 'feat: página dedicada para /resenas con PageHero y carrusel *)",
       "Bash(git commit -m 'perf+fix: imágenes a public/ y formulario conectado con WhatsApp *)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(git commit -m 'fix: eliminar duplicación de títulos, unificar rating 4.4/5, corregir hero mobile *)"
+      "Bash(git commit -m 'fix: eliminar duplicación de títulos, unificar rating 4.4/5, corregir hero mobile *)",
+      "Bash(grep -rn \"#[0-9A-Fa-f]\\\\{3,6\\\\}\" src/components src/pages --include=\"*.tsx\")",
+      "Bash(git commit -m 'design-system: tokens CSS, accesibilidad completa y :focus-visible *)"
     ]
   }
 }

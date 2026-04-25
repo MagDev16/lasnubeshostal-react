@@ -40,13 +40,13 @@ function Lightbox({ photo, onClose, onPrev, onNext }: {
   }, [onClose, onPrev, onNext]);
 
   return (
-    <div onClick={onClose} style={{
+    <div role="dialog" aria-modal="true" aria-label={photo.alt} onClick={onClose} style={{
       position:"fixed", inset:0, zIndex:1000,
       background:"rgba(0,0,0,0.92)", display:"flex",
       alignItems:"center", justifyContent:"center",
     }}>
       {/* Close */}
-      <button onClick={onClose} style={{
+      <button aria-label="Cerrar imagen" onClick={onClose} style={{
         position:"absolute", top:"1.5rem", right:"1.5rem",
         background:"rgba(255,255,255,0.15)", border:"none", color:"white",
         width:42, height:42, borderRadius:"50%", cursor:"pointer",
@@ -54,7 +54,7 @@ function Lightbox({ photo, onClose, onPrev, onNext }: {
       }}>✕</button>
 
       {/* Prev */}
-      <button onClick={e=>{e.stopPropagation();onPrev();}} style={{
+      <button aria-label="Imagen anterior" onClick={e=>{e.stopPropagation();onPrev();}} style={{
         position:"absolute", left:"1.5rem",
         background:"rgba(255,255,255,0.15)", border:"none", color:"white",
         width:48, height:48, borderRadius:"50%", cursor:"pointer",
@@ -74,7 +74,7 @@ function Lightbox({ photo, onClose, onPrev, onNext }: {
       />
 
       {/* Next */}
-      <button onClick={e=>{e.stopPropagation();onNext();}} style={{
+      <button aria-label="Imagen siguiente" onClick={e=>{e.stopPropagation();onNext();}} style={{
         position:"absolute", right:"1.5rem",
         background:"rgba(255,255,255,0.15)", border:"none", color:"white",
         width:48, height:48, borderRadius:"50%", cursor:"pointer",
@@ -145,7 +145,7 @@ export default function Galeria({ hideHeader }: { hideHeader?: boolean } = {}) {
         ))}
       </div>
 
-      <p style={{ marginTop:"1.5rem", fontSize:"0.8rem", color:"#999", textAlign:"center" }}>
+      <p style={{ marginTop:"1.5rem", fontSize:"0.8rem", color:"var(--text-muted)", textAlign:"center" }}>
         📸 Síguenos en Instagram:{" "}
         <a href="https://instagram.com/lasnubeshostal" target="_blank" rel="noreferrer"
           style={{ color:"var(--moss)", textDecoration:"none" }}>@lasnubeshostal</a>

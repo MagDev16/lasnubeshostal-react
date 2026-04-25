@@ -37,9 +37,9 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
   };
 
   const inputStyle: React.CSSProperties = {
-    border: "1.5px solid #d8d4cd", padding: "0.85rem 1rem",
+    border: "1.5px solid var(--input-border)", padding: "0.85rem 1rem",
     fontFamily: "'Lato', sans-serif", fontSize: "0.9rem",
-    background: "white", color: "var(--text)", borderRadius: 2,
+    background: "var(--cloud)", color: "var(--text)", borderRadius: "var(--radius-sm)",
     outline: "none", width: "100%", transition: "border-color 0.2s, box-shadow 0.2s",
   };
 
@@ -57,38 +57,38 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "5rem", alignItems: "start" }}>
         {/* Form */}
-        <form ref={formRef} onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <form ref={formRef} onSubmit={handleSubmit} aria-label="Formulario de reserva" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-              <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Nombre</label>
-              <input name="nombre" type="text" placeholder="Tu nombre" required style={inputStyle}
+              <label htmlFor="f-nombre" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Nombre *</label>
+              <input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" required aria-required="true" style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
+                onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-              <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Email</label>
-              <input name="email" type="email" placeholder="tu@email.com" required style={inputStyle}
+              <label htmlFor="f-email" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Email *</label>
+              <input id="f-email" name="email" type="email" placeholder="tu@email.com" required aria-required="true" style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
+                onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
             </div>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            {[{lbl:"Llegada", name:"llegada"}, {lbl:"Salida", name:"salida"}].map(({lbl, name}) => (
+            {[{lbl:"Llegada", name:"llegada", id:"f-llegada"}, {lbl:"Salida", name:"salida", id:"f-salida"}].map(({lbl, name, id}) => (
               <div key={lbl} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>{lbl}</label>
-                <input name={name} type="date" style={inputStyle}
+                <label htmlFor={id} style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>{lbl}</label>
+                <input id={id} name={name} type="date" style={inputStyle}
                   onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                  onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
+                  onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
               </div>
             ))}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-            <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Habitación de interés</label>
-            <select name="hab" style={inputStyle}
+            <label htmlFor="f-hab" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Habitación de interés</label>
+            <select id="f-hab" name="hab" style={inputStyle}
               onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-              onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }}>
+              onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }}>
               <option>Habitación Familiar (4 personas)</option>
               <option>Suite Volcán (Matrimonial)</option>
               <option>Refugio Barú (Matrimonial)</option>
@@ -97,11 +97,11 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-            <label style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Mensaje</label>
-            <textarea name="mensaje" placeholder="¿Viajan con mascotas, en familia, les interesa un tour de senderismo? Cuéntanos..." rows={4}
+            <label htmlFor="f-mensaje" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Mensaje</label>
+            <textarea id="f-mensaje" name="mensaje" placeholder="¿Viajan con mascotas, en familia, les interesa un tour de senderismo? Cuéntanos..." rows={4}
               style={{ ...inputStyle, resize: "vertical" }}
               onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-              onBlur={e => { e.currentTarget.style.borderColor="#d8d4cd"; e.currentTarget.style.boxShadow="none"; }} />
+              onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
           </div>
 
           <button type="submit" style={{
@@ -112,7 +112,7 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
             borderRadius: 2, cursor: "pointer", alignSelf: "flex-start",
             transition: "background 0.2s, transform 0.2s",
           }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="#a8522a"; (e.currentTarget as HTMLElement).style.transform="translateY(-2px)"; }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="var(--ember-dark)"; (e.currentTarget as HTMLElement).style.transform="translateY(-2px)"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--ember)"; (e.currentTarget as HTMLElement).style.transform="translateY(0)"; }}
           >💬 Enviar por WhatsApp →</button>
 
@@ -150,7 +150,7 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
               </div>
             )},
           ].map(item => (
-            <div key={item.label} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", marginBottom: "1.8rem", paddingBottom: "1.8rem", borderBottom: "1px solid #e8e4dd" }}>
+            <div key={item.label} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", marginBottom: "1.8rem", paddingBottom: "1.8rem", borderBottom: "1px solid var(--divider)" }}>
               <div style={{ width: 44, height: 44, background: "var(--forest)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>{item.icon}</div>
               <div>
                 <strong style={{ display: "block", fontSize: "0.72rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ember)", marginBottom: "0.2rem" }}>{item.label}</strong>

@@ -33,17 +33,17 @@ function StarRating({ score }: { score: number }) {
 function ReviewCard({ review, width }: { review: typeof reviews[0]; width: string }) {
   return (
     <div style={{
-      background:"white", padding:"2rem", borderRadius:2,
+      background:"var(--cloud)", padding:"2rem", borderRadius:2,
       borderLeft:"3px solid var(--moss)", boxShadow:"0 2px 12px rgba(0,0,0,0.06)",
       flex:`0 0 ${width}`, minWidth:0, boxSizing:"border-box",
     }}>
       <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"3rem", color:"var(--sage)", lineHeight:0.5, display:"block", marginBottom:"0.8rem" }}>"</span>
-      <p style={{ fontSize:"0.92rem", lineHeight:1.7, color:"#5A5550", fontStyle:"italic", marginBottom:"1.2rem" }}>{review.text}</p>
+      <p style={{ fontSize:"0.92rem", lineHeight:1.7, color:"var(--text-secondary)", fontStyle:"italic", marginBottom:"1.2rem" }}>{review.text}</p>
       <div style={{ display:"flex", alignItems:"center", gap:"0.8rem" }}>
         <div style={{ width:38, height:38, borderRadius:"50%", background:"var(--forest)", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Playfair Display',serif", color:"var(--stone)", fontSize:"0.9rem", flexShrink:0 }}>{review.initial}</div>
         <div>
           <div style={{ fontSize:"0.85rem", fontWeight:700, color:"var(--dark)" }}>{review.name}</div>
-          <div style={{ fontSize:"0.75rem", color:"#999" }}>{review.origin}</div>
+          <div style={{ fontSize:"0.75rem", color:"var(--text-muted)" }}>{review.origin}</div>
           <StarRating score={5} />
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function Resenas({ hideHeader }: { hideHeader?: boolean } = {}) {
           {ratings.map(r => (
             <div key={r.label} style={{ display:"flex", alignItems:"center", gap:"1rem", marginBottom:"0.55rem" }}>
               <span style={{ fontSize:"0.8rem", color:"var(--warm-mid)", width:170, flexShrink:0 }}>{r.label}</span>
-              <div style={{ flex:1, height:6, background:"#e0ddd8", borderRadius:3, overflow:"hidden" }}>
+              <div style={{ flex:1, height:6, background:"var(--divider-light)", borderRadius:3, overflow:"hidden" }}>
                 <div style={{ height:"100%", width:`${r.pct}%`, background: r.accent ? "var(--ember)" : "var(--forest)", borderRadius:3 }} />
               </div>
               <span style={{ fontSize:"0.8rem", fontWeight:700, color:"var(--dark)", width:28, textAlign:"right" }}>{r.score.toFixed(1)}</span>
@@ -115,8 +115,8 @@ export default function Resenas({ hideHeader }: { hideHeader?: boolean } = {}) {
       </div>
 
       {/* Carousel */}
-      <div style={{ overflow:"hidden" }}>
-        <div style={{
+      <div style={{ overflow:"hidden" }} role="region" aria-label="Carrusel de reseñas">
+        <div aria-live="polite" aria-atomic="false" style={{
           display:"flex",
           gap: isMobile ? 0 : "1.5rem",
           transition:"transform 0.7s cubic-bezier(0.4,0,0.2,1)",
@@ -130,15 +130,15 @@ export default function Resenas({ hideHeader }: { hideHeader?: boolean } = {}) {
 
       {/* Controls */}
       <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem", marginTop:"2rem" }}>
-        <button onClick={()=>{prev();resetTimer();}} style={{ width:40, height:40, borderRadius:"50%", border:"2px solid var(--forest)", background:"transparent", color:"var(--forest)", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center", transition:"background 0.2s, color 0.2s" }}
+        <button aria-label="Reseña anterior" onClick={()=>{prev();resetTimer();}} style={{ width:40, height:40, borderRadius:"50%", border:"2px solid var(--forest)", background:"transparent", color:"var(--forest)", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center", transition:"background 0.2s, color 0.2s" }}
           onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.background="var(--forest)";(e.currentTarget as HTMLElement).style.color="white";}}
           onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.background="transparent";(e.currentTarget as HTMLElement).style.color="var(--forest)";}}>←</button>
-        <div style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
+        <div role="tablist" aria-label="Páginas de reseñas" style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
           {Array.from({ length: totalPages }).map((_, i) => (
-            <button key={i} onClick={()=>{goTo(i);resetTimer();}} style={{ width: i===current ? 20 : 8, height:8, borderRadius:4, background: i===current ? "var(--forest)" : "#d0ccc7", border:"none", cursor:"pointer", transition:"background 0.3s, width 0.3s" }} />
+            <button key={i} role="tab" aria-selected={i===current} aria-label={`Página ${i+1}`} onClick={()=>{goTo(i);resetTimer();}} style={{ width: i===current ? 20 : 8, height:8, borderRadius:4, background: i===current ? "var(--forest)" : "var(--input-border)", border:"none", cursor:"pointer", transition:"background 0.3s, width 0.3s" }} />
           ))}
         </div>
-        <button onClick={()=>{next();resetTimer();}} style={{ width:40, height:40, borderRadius:"50%", border:"2px solid var(--forest)", background:"transparent", color:"var(--forest)", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center", transition:"background 0.2s, color 0.2s" }}
+        <button aria-label="Reseña siguiente" onClick={()=>{next();resetTimer();}} style={{ width:40, height:40, borderRadius:"50%", border:"2px solid var(--forest)", background:"transparent", color:"var(--forest)", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center", transition:"background 0.2s, color 0.2s" }}
           onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.background="var(--forest)";(e.currentTarget as HTMLElement).style.color="white";}}
           onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.background="transparent";(e.currentTarget as HTMLElement).style.color="var(--forest)";}}>→</button>
       </div>
