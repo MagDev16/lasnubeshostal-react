@@ -26,41 +26,26 @@ export default function Navbar() {
   useEffect(() => { setActive(location.pathname); }, [location.pathname]);
 
   useEffect(() => {
-    if (!isHome) return;
-    const onScroll = () => {
-      setScrolled(window.scrollY > 60);
-      for (let i = links.length - 1; i >= 0; i--) {
-        const el = document.getElementById(links[i].section);
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(links[i].href); break;
-        }
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
-
-  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (href: string, section: string) => {
+  const go = (href: string, _section: string) => {
     setActive(href);
     setDrawerOpen(false);
     document.body.style.overflow = "";
-    if (isHome && href === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (isHome) {
-      setTimeout(() => {
-        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
-      }, 80);
+    if (href === "/") {
+      if (isHome) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        navigate("/");
+        window.scrollTo(0, 0);
+      }
     } else {
       navigate(href);
       window.scrollTo(0, 0);
     }
-    if (!isHome) navigate(href);
   };
 
   const toggleDrawer = () => {
