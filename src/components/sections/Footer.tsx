@@ -61,7 +61,7 @@ export default function Footer() {
             </p>
             <div style={{ display:"flex", alignItems:"center", gap:"0.6rem" }}>
               <span style={{ background:"var(--forest)", color:"var(--sun-lt)", fontFamily:"'Playfair Display',serif", fontSize:"1rem", fontWeight:700, padding:"0.3rem 0.7rem", borderRadius:2 }}>4.4</span>
-              <span style={{ fontSize:"0.78rem", color:"rgba(250,247,242,0.5)" }}>⭐⭐⭐⭐⭐ · 29 reseñas</span>
+              <span style={{ fontSize:"0.78rem", color:"rgba(250,247,242,0.5)" }}><span aria-hidden="true">⭐⭐⭐⭐⭐</span> · 29 reseñas</span>
             </div>
           </div>
 
@@ -114,7 +114,7 @@ export default function Footer() {
                     onMouseEnter={e => (e.currentTarget.style.color = "var(--sun-lt)")}
                     onMouseLeave={e => (e.currentTarget.style.color = "rgba(250,247,242,0.52)")}
                   >
-                    <span style={{ width:30, height:30, borderRadius:"50%", background:"rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.85rem", flexShrink:0 }}>{s.icon}</span>
+                    <span aria-hidden="true" style={{ width:30, height:30, borderRadius:"50%", background:"rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.85rem", flexShrink:0 }}>{s.icon}</span>
                     {s.label}
                   </a>
                 ) : (
@@ -127,7 +127,7 @@ export default function Footer() {
                   onMouseEnter={e => (e.currentTarget.style.color = "var(--sun-lt)")}
                   onMouseLeave={e => (e.currentTarget.style.color = "rgba(250,247,242,0.52)")}
                   >
-                    <span style={{ width:30, height:30, borderRadius:"50%", background:"rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.85rem", flexShrink:0 }}>{s.icon}</span>
+                    <span aria-hidden="true" style={{ width:30, height:30, borderRadius:"50%", background:"rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.85rem", flexShrink:0 }}>{s.icon}</span>
                     {s.label}
                   </button>
                 )
@@ -148,10 +148,6 @@ export default function Footer() {
         </div>
       </div>
 
-      <style>{`
-        @media(max-width:1024px){ .footer-grid{ grid-template-columns:1fr 1fr !important; } }
-        @media(max-width:480px){ .footer-grid{ grid-template-columns:1fr !important; } }
-      `}</style>
     </footer>
   );
 }

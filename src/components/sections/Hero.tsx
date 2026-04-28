@@ -12,7 +12,7 @@ export default function Hero() {
           display:"inline-block", fontSize:"0.7rem", letterSpacing:"0.32em",
           textTransform:"uppercase", color:"var(--sun-lt)",
           border:"1px solid rgba(232,160,32,0.6)", padding:"0.35rem 1.2rem", marginBottom:"1.5rem",
-        }}>🌿 Cerro Punta, Chiriquí · Panamá</span>
+        }}><span aria-hidden="true">🌿</span> Cerro Punta, Chiriquí · Panamá</span>
 
         <h1 className="animate-fade-up-1" style={{
           fontFamily:"'Playfair Display',serif",
@@ -46,9 +46,6 @@ export default function Hero() {
         Descubre
         <div style={{ width:1, height:40, background:"rgba(255,255,255,0.4)" }} />
       </div>
-      <style>{`
-        @media (max-height: 600px), (max-width: 480px) { .hero-scroll-hint { display: none !important; } }
-      `}</style>
     </section>
   );
 }

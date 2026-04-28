@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const LOGO_SRC = "/LNH-logo.png";
 
 const links = [
-  { label:"Inicio",        href:"/",             section:"inicio" },
   { label:"Nosotros",      href:"/nosotros",     section:"nosotros" },
   { label:"Servicios",     href:"/servicios",    section:"servicios" },
   { label:"Habitaciones",  href:"/habitaciones", section:"habitaciones" },
   { label:"Galería",       href:"/galeria",      section:"galeria" },
   { label:"Reseñas",       href:"/resenas",      section:"resenas" },
-  { label:"Ubicación",     href:"/ubicacion",    section:"mapa" },
   { label:"Contacto",      href:"/contacto",     section:"contacto" },
 ];
 
@@ -21,8 +19,9 @@ export default function Navbar() {
   const [scrolled, setScrolled]     = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [active, setActive]         = useState(location.pathname);
+  const drawerRef   = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-  // Sync active with location changes
   useEffect(() => { setActive(location.pathname); }, [location.pathname]);
 
   useEffect(() => {
@@ -31,17 +30,43 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (href: string, _section: string) => {
-    setActive(href);
+  // Focus trap inside drawer
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+    const focusable = drawer.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    first?.focus();
+
+    const trap = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { closeDrawer(); return; }
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last)  { e.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener("keydown", trap);
+    return () => document.removeEventListener("keydown", trap);
+  }, [drawerOpen]);
+
+  const closeDrawer = () => {
     setDrawerOpen(false);
     document.body.style.overflow = "";
+    hamburgerRef.current?.focus();
+  };
+
+  const go = (href: string, _section: string) => {
+    setActive(href);
+    closeDrawer();
     if (href === "/") {
-      if (isHome) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        navigate("/");
-        window.scrollTo(0, 0);
-      }
+      if (isHome) window.scrollTo({ top: 0, behavior: "smooth" });
+      else { navigate("/"); window.scrollTo(0, 0); }
     } else {
       navigate(href);
       window.scrollTo(0, 0);
@@ -49,10 +74,9 @@ export default function Navbar() {
   };
 
   const toggleDrawer = () => {
-    setDrawerOpen(o => {
-      document.body.style.overflow = !o ? "hidden" : "";
-      return !o;
-    });
+    const next = !drawerOpen;
+    setDrawerOpen(next);
+    document.body.style.overflow = next ? "hidden" : "";
   };
 
   return (
@@ -83,7 +107,7 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <ul className="nav-desktop" style={{ display:"flex", gap:"1.6rem", listStyle:"none", alignItems:"center" }}>
-          {links.slice(1,-1).map(l => (
+          {links.slice(0,-1).map(l => (
             <li key={l.href}>
               <a href={l.href} onClick={e=>{e.preventDefault();go(l.href,l.section);}} style={{
                 color: active===l.href ? "var(--sun-lt)" : "rgba(250,247,242,0.75)",
@@ -106,11 +130,17 @@ export default function Navbar() {
         </ul>
 
         {/* Hamburger */}
-        <button onClick={toggleDrawer} className="nav-hamburger"
+        <button
+          ref={hamburgerRef}
+          onClick={toggleDrawer}
+          className="nav-hamburger"
           style={{ background:"none", border:"none", cursor:"pointer", display:"none", flexDirection:"column", gap:5, padding:6 }}
-          aria-label="Menú">
+          aria-label={drawerOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={drawerOpen}
+          aria-controls="mobile-drawer"
+        >
           {[0,1,2].map(i=>(
-            <span key={i} style={{
+            <span key={i} aria-hidden="true" style={{
               display:"block", width:24, height:2, background:"var(--cloud)",
               borderRadius:2, transition:"transform 0.3s, opacity 0.3s",
               transform: drawerOpen ? (i===0?"translateY(7px) rotate(45deg)":i===2?"translateY(-7px) rotate(-45deg)":"none") : "none",
@@ -122,27 +152,36 @@ export default function Navbar() {
 
       {/* Overlay */}
       {drawerOpen && (
-        <div onClick={toggleDrawer} className="animate-fade-in"
+        <div onClick={closeDrawer} className="animate-fade-in"
+          aria-hidden="true"
           style={{ position:"fixed", inset:0, zIndex:198, background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)" }} />
       )}
 
       {/* Drawer */}
-      <div style={{
-        position:"fixed", top:0, right:0, width:"min(300px,82vw)", height:"100vh",
-        zIndex:199, background:"var(--dark)", padding:"5.5rem 2.5rem 2.5rem",
-        transform: drawerOpen ? "translateX(0)" : "translateX(100%)",
-        transition:"transform 0.35s cubic-bezier(0.4,0,0.2,1)",
-        boxShadow:"-8px 0 40px rgba(0,0,0,0.5)",
-        overflowY:"auto",
-      }}>
+      <div
+        id="mobile-drawer"
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú de navegación"
+        style={{
+          position:"fixed", top:0, right:0, width:"min(300px,82vw)", height:"100vh",
+          zIndex:199, background:"var(--dark)", padding:"5.5rem 2.5rem 2.5rem",
+          transform: drawerOpen ? "translateX(0)" : "translateX(100%)",
+          transition:"transform 0.35s cubic-bezier(0.4,0,0.2,1)",
+          boxShadow:"-8px 0 40px rgba(0,0,0,0.5)",
+          overflowY:"auto",
+          visibility: drawerOpen ? "visible" : "hidden",
+        }}
+      >
         {/* Logo in drawer */}
         <div style={{ display:"flex", alignItems:"center", gap:"0.7rem", marginBottom:"2rem", paddingBottom:"1.5rem", borderBottom:"1px solid rgba(232,160,32,0.2)" }}>
-          <img src={LOGO_SRC} alt="Las Nubes Hostal" style={{ width:42, height:42, borderRadius:"50%", objectFit:"cover", border:"2px solid var(--sun)" }} />
+          <img src={LOGO_SRC} alt="" aria-hidden="true" style={{ width:42, height:42, borderRadius:"50%", objectFit:"cover", border:"2px solid var(--sun)" }} />
           <span style={{ fontFamily:"'Playfair Display',serif", color:"var(--cloud)", fontSize:"0.95rem" }}>Las Nubes Hostal</span>
         </div>
 
         <ul style={{ listStyle:"none" }}>
-          {links.map(l=>(
+          {[{ label:"Inicio", href:"/", section:"inicio" }, ...links].map(l=>(
             <li key={l.href} style={{ borderBottom:"1px solid rgba(255,255,255,0.07)" }}>
               <a href={l.href} onClick={e=>{e.preventDefault();go(l.href,l.section);}} style={{
                 display:"block", padding:"0.95rem 0",
@@ -162,9 +201,13 @@ export default function Navbar() {
 
         <div style={{ marginTop:"2rem", display:"flex", gap:"1rem", flexWrap:"wrap" }}>
           <a href="https://instagram.com/lasnubeshostal" target="_blank" rel="noreferrer"
-            style={{ color:"rgba(245,242,237,0.45)", fontSize:"0.75rem", textDecoration:"none" }}>📷 @lasnubeshostal</a>
+            style={{ color:"rgba(245,242,237,0.45)", fontSize:"0.75rem", textDecoration:"none" }}>
+            <span aria-hidden="true">📷</span> @lasnubeshostal
+          </a>
           <a href="tel:+50768109090"
-            style={{ color:"rgba(245,242,237,0.45)", fontSize:"0.75rem", textDecoration:"none" }}>📞 +507 6810 9090</a>
+            style={{ color:"rgba(245,242,237,0.45)", fontSize:"0.75rem", textDecoration:"none" }}>
+            <span aria-hidden="true">📞</span> +507 6810 9090
+          </a>
         </div>
       </div>
     </>

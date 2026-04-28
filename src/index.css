@@ -32,9 +32,12 @@
   --warm-mid:  #6A5A48;
   --light-line:#E0D8C8;
 
-  /* Ember (CTA) — kept from original but warmed */
-  --ember:     #B85A1A;
-  --ember-dark:#a8522a;
+  /* Ember (CTA) — darkened to #A34E15 for WCAG AA contrast on --cream */
+  --ember:     #A34E15;
+  --ember-dark:#8B3A0A;
+
+  /* Stone — used for avatar initials on dark backgrounds */
+  --stone:         #FAF7F2;
 
   /* Text semantic */
   --text-muted:    #999999;
@@ -138,11 +141,21 @@ main {
 /* ── CAROUSEL ── */
 .carousel-track { display:flex; gap:1.5rem; transition:transform 0.7s cubic-bezier(0.4,0,0.2,1); }
 
-/* ── FOCUS VISIBLE (accessibility) ── */
+/* ── FOCUS VISIBLE (accessibility) — uses --forest for 3:1+ contrast on all backgrounds ── */
 :focus-visible {
-  outline: 2px solid var(--sun);
+  outline: 2px solid var(--forest);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
+}
+
+/* ── INPUTS — native focus ring via CSS, not inline outline:none ── */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--moss);
+  outline-offset: 0;
+  border-color: var(--moss) !important;
+  box-shadow: 0 0 0 3px rgba(74,122,58,0.12);
 }
 
 /* ── BUTTONS ── */
@@ -178,8 +191,17 @@ main {
   .nav-hamburger { display:flex !important; }
   nav { padding:1rem 1.5rem !important; }
 }
+/* ── FOOTER grid breakpoints ── */
+@media (max-width:1024px) {
+  .footer-grid { grid-template-columns:1fr 1fr !important; }
+}
 @media (max-width:480px) {
   .footer-grid { grid-template-columns:1fr !important; }
   .galeria-grid { grid-template-columns:1fr 1fr !important; grid-template-rows:auto !important; }
   .galeria-grid > div:first-child { grid-column:span 2 !important; }
+}
+
+/* ── HERO scroll hint ── */
+@media (max-height:600px), (max-width:480px) {
+  .hero-scroll-hint { display:none !important; }
 }

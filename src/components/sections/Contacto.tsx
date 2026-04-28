@@ -40,7 +40,7 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
     border: "1.5px solid var(--input-border)", padding: "0.85rem 1rem",
     fontFamily: "'Lato', sans-serif", fontSize: "0.9rem",
     background: "var(--cloud)", color: "var(--text)", borderRadius: "var(--radius-sm)",
-    outline: "none", width: "100%", transition: "border-color 0.2s, box-shadow 0.2s",
+    width: "100%", transition: "border-color 0.2s, box-shadow 0.2s",
   };
 
   return (
@@ -61,15 +61,11 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <label htmlFor="f-nombre" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Nombre *</label>
-              <input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" required aria-required="true" style={inputStyle}
-                onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
+              <input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" required aria-required="true" style={inputStyle} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <label htmlFor="f-email" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Email *</label>
-              <input id="f-email" name="email" type="email" placeholder="tu@email.com" required aria-required="true" style={inputStyle}
-                onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
+              <input id="f-email" name="email" type="email" placeholder="tu@email.com" required aria-required="true" style={inputStyle} />
             </div>
           </div>
 
@@ -77,18 +73,14 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
             {[{lbl:"Llegada", name:"llegada", id:"f-llegada"}, {lbl:"Salida", name:"salida", id:"f-salida"}].map(({lbl, name, id}) => (
               <div key={lbl} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 <label htmlFor={id} style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>{lbl}</label>
-                <input id={id} name={name} type="date" style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-                  onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
+                <input id={id} name={name} type="date" style={inputStyle} />
               </div>
             ))}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
             <label htmlFor="f-hab" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Habitación de interés</label>
-            <select id="f-hab" name="hab" style={inputStyle}
-              onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-              onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }}>
+            <select id="f-hab" name="hab" style={inputStyle}>
               <option>Habitación Familiar (4 personas)</option>
               <option>Suite Volcán (Matrimonial)</option>
               <option>Refugio Barú (Matrimonial)</option>
@@ -99,9 +91,7 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
             <label htmlFor="f-mensaje" style={{ fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--forest)", fontWeight: 700 }}>Mensaje</label>
             <textarea id="f-mensaje" name="mensaje" placeholder="¿Viajan con mascotas, en familia, les interesa un tour de senderismo? Cuéntanos..." rows={4}
-              style={{ ...inputStyle, resize: "vertical" }}
-              onFocus={e => { e.currentTarget.style.borderColor="var(--moss)"; e.currentTarget.style.boxShadow="0 0 0 3px rgba(74,124,89,0.12)"; }}
-              onBlur={e => { e.currentTarget.style.borderColor="var(--input-border)"; e.currentTarget.style.boxShadow="none"; }} />
+              style={{ ...inputStyle, resize: "vertical" }} />
           </div>
 
           <button type="submit" style={{
@@ -114,7 +104,7 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
           }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="var(--ember-dark)"; (e.currentTarget as HTMLElement).style.transform="translateY(-2px)"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--ember)"; (e.currentTarget as HTMLElement).style.transform="translateY(0)"; }}
-          >💬 Enviar por WhatsApp →</button>
+          ><span aria-hidden="true">💬</span> Enviar por WhatsApp →</button>
 
           {sent && (
             <div style={{ color: "var(--moss)", fontSize: "0.9rem", padding: "0.8rem", background: "rgba(74,124,89,0.08)", borderRadius: 2 }}>
@@ -133,8 +123,8 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
             { icon: "📸", label: "Síguenos", content: (
               <div style={{ display: "flex", gap: "0.8rem", flexWrap: "wrap", marginTop: "0.3rem" }}>
                 {[
-                  { href: "https://instagram.com/lasnubeshostal", label: "📷 Instagram" },
-                  { href: "https://wa.me/50768109090", label: "💬 WhatsApp" },
+                  { href: "https://instagram.com/lasnubeshostal", icon: "📷", label: "Instagram" },
+                  { href: "https://wa.me/50768109090",           icon: "💬", label: "WhatsApp" },
                 ].map(btn => (
                   <a key={btn.label} href={btn.href} target="_blank" rel="noreferrer" style={{
                     display: "inline-flex", alignItems: "center", gap: "0.4rem",
@@ -145,13 +135,13 @@ export default function Contacto({ hideHeader }: { hideHeader?: boolean } = {}) 
                   }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background="var(--moss)"; (e.currentTarget as HTMLElement).style.borderColor="var(--moss)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background="var(--forest)"; (e.currentTarget as HTMLElement).style.borderColor="var(--forest)"; }}
-                  >{btn.label}</a>
+                  ><span aria-hidden="true">{btn.icon}</span> {btn.label}</a>
                 ))}
               </div>
             )},
           ].map(item => (
             <div key={item.label} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", marginBottom: "1.8rem", paddingBottom: "1.8rem", borderBottom: "1px solid var(--divider)" }}>
-              <div style={{ width: 44, height: 44, background: "var(--forest)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>{item.icon}</div>
+              <div aria-hidden="true" style={{ width: 44, height: 44, background: "var(--forest)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>{item.icon}</div>
               <div>
                 <strong style={{ display: "block", fontSize: "0.72rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ember)", marginBottom: "0.2rem" }}>{item.label}</strong>
                 <span style={{ fontSize: "0.95rem", color: "var(--text)", lineHeight: 1.5 }}>{item.content}</span>
